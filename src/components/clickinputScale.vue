@@ -1,86 +1,65 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from "vue";
-
 interface Item {
   name: string;
 }
-
-// Dropdown items
 const items = ref<Item[]>([
   { name: "Apple" },
   { name: "Banana" },
   { name: "Orange" },
   { name: "Mango" },
 ]);
-
 const selectedItem = ref<Item | null>(null);
-
-// Dropdown state
-const dropdownOpen = ref(false);
-const loading = ref(false);
 const dropdownRef = ref<HTMLElement | null>(null);
-
-// Toggle dropdown with loading spinner
+const dropdownOpen = ref(false);
+const loading = ref<boolean>(false);
 const toggleDropdown = () => {
   dropdownOpen.value = true;
   loading.value = true;
-
   setTimeout(() => {
     loading.value = false;
   }, 500);
 };
-
-// Select item
 const selectItem = (item: Item) => {
   selectedItem.value = item;
   dropdownOpen.value = false;
 };
-
-// Close dropdown if clicked outside
 const handleClickOutside = (e: MouseEvent) => {
   if (dropdownRef.value && !dropdownRef.value.contains(e.target as Node)) {
     dropdownOpen.value = false;
     loading.value = false;
   }
 };
-
-// Add/remove event listener
 onMounted(() => document.addEventListener("click", handleClickOutside));
 onBeforeUnmount(() =>
   document.removeEventListener("click", handleClickOutside),
 );
 </script>
-
 <template>
   <div class="h-screen flex items-center justify-center bg-gray-100">
     <div class="relative w-64" ref="dropdownRef">
-      <!-- Input with floating label -->
-      <div class="relative w-full">
-        <input
-          type="text"
-          readonly
-          @click="toggleDropdown"
-          :value="selectedItem ? selectedItem.name : ''"
-          placeholder=" "
-          class="peer w-full border px-3 py-2 rounded bg-white focus:outline-none"
-        />
-        <label
-          class="absolute left-3 transition-all duration-200"
-          :class="{
-            '-top-5 text-gray-600 text-sm': selectedItem || dropdownOpen,
-            'top-2 text-gray-400 text-sm': !selectedItem && !dropdownOpen,
-          }"
-        >
-          Select an item
-        </label>
-      </div>
+      <input
+        type="text"
+        readonly
+        @click="toggleDropdown"
+        :value="selectedItem ? selectedItem.name : ''"
+        placeholder=""
+        class="peer w-full border px-3 pt-5 pb-2 rounded bg-white focus:outline-none text-gray-800"
+      />
+      <label
+        v-if="!selectedItem"
+        class="absolute left-3 top-4 text-gray-400 text-base transition-all duration-200 transform scale-100 origin-left"
+        :class="{
+          '-translate-y-2 scale-90 text-sm text-gray-600': dropdownOpen,
+        }"
+      >
+        Select an item
+      </label>
 
-      <!-- Dropdown -->
       <ul
         v-if="dropdownOpen"
         class="absolute w-full bg-white border mt-1 rounded shadow z-10 max-h-60 overflow-auto flex flex-col items-center justify-center"
       >
-        <!-- Loading spinner -->
         <li v-if="loading" class="py-4 flex justify-center w-full">
           <svg
             class="animate-spin h-5 w-5 text-gray-500"
@@ -103,7 +82,6 @@ onBeforeUnmount(() =>
             ></path>
           </svg>
         </li>
-
         <li
           v-else
           v-for="item in items"

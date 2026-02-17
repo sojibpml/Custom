@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import ClickInputTextUpper from "./components/ClickInputTextUpper.vue";
+import ClickinputScale from "./components/clickinputScale.vue";
 </script>
 <template>
-  <ClickInputTextUpper />
+  <ClickinputScale />
 </template>
