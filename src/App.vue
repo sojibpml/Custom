@@ -1,4 +1,6 @@
 <script lang="ts" setup>
-import lazyLoding from "./components/lazyLoding.vue";
+import ClickInputTextUpper from "./components/ClickInputTextUpper.vue";
 </script>
-<template></template>
+<template>
+  <ClickInputTextUpper />
+</template>
