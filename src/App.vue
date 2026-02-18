@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import ClickinputScale from "./components/clickinputScale.vue";
+import { ref } from "vue";
 </script>
 <template>
-  <ClickinputScale />
+  <div class="p-10"></div>
 </template>
